@@ -19,9 +19,9 @@ object fmTurmites: TfmTurmites
   PixelsPerInch = 96
   TextHeight = 13
   object Panel1: TPanel
-    Left = 766
+    Left = 768
     Top = 0
-    Width = 124
+    Width = 122
     Height = 597
     Align = alRight
     BevelOuter = bvNone
@@ -135,7 +135,10 @@ object fmTurmites: TfmTurmites
         Width = 97
         Height = 17
         Caption = 'Unscaled'
+        Checked = True
+        State = cbChecked
         TabOrder = 0
+        OnClick = cbUnscaledClick
       end
       object cbMonochrome: TCheckBox
         Left = 5
@@ -143,8 +146,19 @@ object fmTurmites: TfmTurmites
         Width = 97
         Height = 17
         Caption = 'Monochrome'
+        Checked = True
+        State = cbChecked
         TabOrder = 1
       end
+    end
+    object lbLastRules: TListBox
+      Left = 5
+      Top = 380
+      Width = 114
+      Height = 126
+      ItemHeight = 13
+      TabOrder = 5
+      OnClick = lbLastRulesClick
     end
   end
   object tmrSim: TTimer

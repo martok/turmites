@@ -25,6 +25,7 @@ type
     GroupBox3: TGroupBox;
     cbUnscaled: TCheckBox;
     cbMonochrome: TCheckBox;
+    lbLastRules: TListBox;
     procedure FormCreate(Sender: TObject);
     procedure FormPaint(Sender: TObject);
     procedure tmrSimTimer(Sender: TObject);
@@ -36,6 +37,8 @@ type
     procedure btnEnterClick(Sender: TObject);
     procedure cbAutoRndClick(Sender: TObject);
     procedure tmrRandomizeRuleTimer(Sender: TObject);
+    procedure cbUnscaledClick(Sender: TObject);
+    procedure lbLastRulesClick(Sender: TObject);
   private
     { Private-Deklarationen }
     fWorld: TAntWorld;
@@ -79,9 +82,10 @@ end;
 
 procedure TfmTurmites.tmrSimTimer(Sender: TObject);
 var
-  i: integer;
+  i, m: integer;
 begin
-  for i:= 1 to StrToIntDef(sePerImage.Text, 1) do begin
+  m:= StrToIntDef(sePerImage.Text, 1);
+  for i:= 1 to m do begin
     if not fAnt.Run(fWorld) then begin
       tmrSim.Enabled:= false;
       break;
@@ -89,11 +93,17 @@ begin
   end;
   Label1.Caption:= IntToStr(fWorld.Generation);
   Refresh;
+  if m < 1000 then
+    Sleep(1)
+  else
+  if m < 10000 then
+    Sleep(0);
 end;
 
 procedure TfmTurmites.BeginComp(hhp: Cardinal);
 var
   colors: integer;
+  s: string;
 begin
   FreeAndNil(fWorld);
   FreeAndNil(fAnt);
@@ -107,6 +117,11 @@ begin
   else
     fWorld.SetAntPalette(plColor, colors);
   Caption:= format('HHP: %u  Rule: %s  on %dx%dx%d', [fAnt.GetHHP, fAnt.GetRule, fWorld.Width, fWorld.Height, Colors]);
+  s:= IntToStr(int64(fAnt.GetHHP));
+  if lbLastRules.Items.IndexOf(s) >= 0 then
+    lbLastRules.Items.Delete(lbLastRules.Items.IndexOf(s));
+  lbLastRules.Items.Insert(0, s);
+
   tmrSim.Enabled:= true;
 end;
 
@@ -155,6 +170,17 @@ end;
 procedure TfmTurmites.tmrRandomizeRuleTimer(Sender: TObject);
 begin
   btnRandom.Click;
+end;
+
+procedure TfmTurmites.cbUnscaledClick(Sender: TObject);
+begin
+  Refresh;
+end;
+
+procedure TfmTurmites.lbLastRulesClick(Sender: TObject);
+begin
+  if lbLastRules.ItemIndex >= 0 then
+    BeginComp(StrToInt64(lbLastRules.Items[lbLastRules.ItemIndex]));
 end;
 
 end.
