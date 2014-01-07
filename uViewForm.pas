@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, StdCtrls, Spin, uAntWorld, uAnt;
+  Dialogs, ExtCtrls, StdCtrls, Spin, uAntWorld, uAnt, Math;
 
 type
   TfmTurmites = class(TForm)
@@ -81,7 +81,7 @@ procedure TfmTurmites.tmrSimTimer(Sender: TObject);
 var
   i: integer;
 begin
-  for i:= 1 to sePerImage.Value do begin
+  for i:= 1 to StrToIntDef(sePerImage.Text, 1) do begin
     if not fAnt.Run(fWorld) then begin
       tmrSim.Enabled:= false;
       break;
@@ -92,6 +92,8 @@ begin
 end;
 
 procedure TfmTurmites.BeginComp(hhp: Cardinal);
+var
+  colors: integer;
 begin
   FreeAndNil(fWorld);
   FreeAndNil(fAnt);
@@ -99,7 +101,12 @@ begin
   fWorld.Wrap:= false;
   fAnt:= TAnt.Create(hhp);
   fAnt.CenterIn(fWorld);
-  Caption:= format('HHP: %u  Rule: %s  on %dx%d', [fAnt.GetHHP, fAnt.GetRule, fWorld.Width, fWorld.Height]);
+  colors:= length(fant.GetRule);
+  if cbMonochrome.Checked then
+    fWorld.SetAntPalette(plMonochrome, colors)
+  else
+    fWorld.SetAntPalette(plColor, colors);
+  Caption:= format('HHP: %u  Rule: %s  on %dx%dx%d', [fAnt.GetHHP, fAnt.GetRule, fWorld.Width, fWorld.Height, Colors]);
   tmrSim.Enabled:= true;
 end;
 

@@ -54,10 +54,10 @@ object fmTurmites: TfmTurmites
         Top = 20
         Width = 46
         Height = 22
-        MaxValue = 31
+        MaxValue = 18
         MinValue = 2
         TabOrder = 1
-        Value = 4
+        Value = 6
       end
       object cbAutoRnd: TCheckBox
         Left = 7
@@ -142,7 +142,7 @@ object fmTurmites: TfmTurmites
         Top = 35
         Width = 97
         Height = 17
-        Caption = 'cbMonochrome'
+        Caption = 'Monochrome'
         TabOrder = 1
       end
     end

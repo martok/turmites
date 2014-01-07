@@ -6,6 +6,7 @@ uses
   Windows, SysUtils, Graphics;
 
 type
+  TAntPalette = (plMonochrome, plColor);
   TAntWorld = class(TBitmap)
   private
     fWrap: boolean;
@@ -18,7 +19,8 @@ type
     property Wrap: boolean read fWrap write fWrap;
     property Field[X, Y: integer]: byte read GetField write SetField;
     function WrapCoords(var X,Y: integer): boolean;
-    procedure Clear;                  
+    procedure Clear;
+    procedure SetAntPalette(const aPalette: TAntPalette; const aCount: integer);
   end;
 
 implementation
@@ -47,47 +49,76 @@ begin
 end;
 
 constructor TAntWorld.Create(const aWidth, aHeight: integer);
-var
-  pal: TMaxLogPalette;
-
-  procedure PushColor(C: TColor);
-  begin
-    pal.palPalEntry[pal.palNumEntries]:= PalEntry(C);
-    inc(pal.palNumEntries);
-  end;
 begin
   inherited Create;
   PixelFormat:= pf8bit;
-
-  pal.palVersion:= $0300;
-  pal.palNumEntries:= 0;
-                        
-  PushColor(clWhite);
-  PushColor(clBlack);
-  PushColor(clLime);
-  PushColor(clBlue);
-  PushColor(clMaroon);
-  PushColor(clTeal);
-  PushColor(clGray);
-  PushColor(clNavy);
-  PushColor(clFuchsia);
-  PushColor(clGreen);
-  PushColor(clOlive);
-  PushColor(clPurple);
-  PushColor(clSilver);
-  PushColor(clRed);
-  PushColor(clYellow);
-  PushColor(clAqua);
-  PushColor(clLtGray);
-  PushColor(clDkGray);
-
-  Palette:= CreatePalette(PLOGPALETTE(@pal)^);
+  SetAntPalette(plColor, 18);
 
   Width:= aWidth;
   Height:= aHeight;
 
   Wrap:= true;
   Clear;
+end;
+
+procedure TAntWorld.SetAntPalette(const aPalette: TAntPalette; const aCount: integer);
+var
+  pal: TMaxLogPalette;
+  y: integer;
+
+  procedure PushColor(C: TColor);
+  begin
+    pal.palPalEntry[pal.palNumEntries]:= PalEntry(C);
+    inc(pal.palNumEntries);
+  end;
+
+  procedure PalMono;
+  var
+    i: integer;
+    k: byte;
+  begin
+    for i:= aCount-1 downto 0 do begin
+      k:= 255 * i div (aCount-1);
+      PushColor(RGB(k,k,k));
+    end;
+  end;
+
+  procedure PalColor;
+  begin
+    PushColor(clWhite);
+    PushColor(clBlack);
+    PushColor(clLime);
+    PushColor(clBlue);
+    PushColor(clMaroon);
+    PushColor(clTeal);
+    PushColor(clGray);
+    PushColor(clNavy);
+    PushColor(clFuchsia);
+    PushColor(clGreen);
+    PushColor(clOlive);
+    PushColor(clPurple);
+    PushColor(clSilver);
+    PushColor(clRed);
+    PushColor(clYellow);
+    PushColor(clAqua);
+    PushColor(clLtGray);
+    PushColor(clDkGray);
+  end;
+
+begin
+  pal.palVersion:= $0300;
+  pal.palNumEntries:= 0;
+
+  case aPalette of
+    plMonochrome: PalMono;
+    plColor: PalColor;
+  end;
+
+  Palette:= CreatePalette(PLOGPALETTE(@pal)^);
+
+  SetLength(fPixels, Height);
+  for y:= 0 to Height-1 do
+    fPixels[y]:= ScanLine[y];
 end;
 
 function TAntWorld.GetField(X, Y: integer): byte;
