@@ -26,6 +26,7 @@ type
     cbUnscaled: TCheckBox;
     cbMonochrome: TCheckBox;
     lbLastRules: TListBox;
+    cbPause: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormPaint(Sender: TObject);
     procedure tmrSimTimer(Sender: TObject);
@@ -39,6 +40,7 @@ type
     procedure tmrRandomizeRuleTimer(Sender: TObject);
     procedure cbUnscaledClick(Sender: TObject);
     procedure lbLastRulesClick(Sender: TObject);
+    procedure cbPauseClick(Sender: TObject);
   private
     { Private-Deklarationen }
     fWorld: TAntWorld;
@@ -93,8 +95,8 @@ begin
   end;
   Label1.Caption:= IntToStr(fWorld.Generation);
   Refresh;
-  if m < 1000 then
-    Sleep(1)
+  if m < 100 then
+    Sleep(2)
   else
   if m < 10000 then
     Sleep(0);
@@ -107,7 +109,8 @@ var
 begin
   FreeAndNil(fWorld);
   FreeAndNil(fAnt);
-  tmrSim.Enabled:= false;
+  cbPause.Enabled:= False;
+  cbPause.Checked:= True;
   try
     fAnt:= TAnt.Create(hhp);
   except
@@ -129,7 +132,8 @@ begin
     lbLastRules.Items.Delete(lbLastRules.Items.IndexOf(s));
   lbLastRules.Items.Insert(0, s);
 
-  tmrSim.Enabled:= true;
+  cbPause.Checked:= False;
+  cbPause.Enabled:= True;
 end;
 
 procedure TfmTurmites.btnRandomClick(Sender: TObject);
@@ -188,6 +192,11 @@ procedure TfmTurmites.lbLastRulesClick(Sender: TObject);
 begin
   if lbLastRules.ItemIndex >= 0 then
     BeginComp(StrToInt64(lbLastRules.Items[lbLastRules.ItemIndex]));
+end;
+
+procedure TfmTurmites.cbPauseClick(Sender: TObject);
+begin
+  tmrSim.Enabled:= not cbPause.Checked;
 end;
 
 end.

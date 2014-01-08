@@ -27,10 +27,10 @@ object fmTurmites: TfmTurmites
     BevelOuter = bvNone
     TabOrder = 0
     object GroupBox1: TGroupBox
-      Left = 4
+      Left = 5
       Top = 3
       Width = 115
-      Height = 126
+      Height = 108
       Caption = 'Random Rule'
       TabOrder = 0
       object Label2: TLabel
@@ -41,7 +41,7 @@ object fmTurmites: TfmTurmites
         Caption = 'Colours'
       end
       object btnRandom: TButton
-        Left = 6
+        Left = 7
         Top = 45
         Width = 75
         Height = 25
@@ -50,7 +50,7 @@ object fmTurmites: TfmTurmites
         OnClick = btnRandomClick
       end
       object seColors: TSpinEdit
-        Left = 5
+        Left = 7
         Top = 20
         Width = 46
         Height = 22
@@ -71,8 +71,8 @@ object fmTurmites: TfmTurmites
       end
     end
     object btnEnter: TButton
-      Left = 4
-      Top = 133
+      Left = 5
+      Top = 115
       Width = 115
       Height = 25
       Caption = 'Enter Rule [F3]'
@@ -81,13 +81,13 @@ object fmTurmites: TfmTurmites
     end
     object GroupBox2: TGroupBox
       Left = 5
-      Top = 163
-      Width = 114
-      Height = 91
+      Top = 143
+      Width = 115
+      Height = 113
       Caption = 'Generations'
       TabOrder = 2
       object Label1: TLabel
-        Left = 9
+        Left = 7
         Top = 17
         Width = 97
         Height = 13
@@ -96,14 +96,14 @@ object fmTurmites: TfmTurmites
         Caption = '10000000000'
       end
       object Label3: TLabel
-        Left = 10
+        Left = 7
         Top = 40
-        Width = 88
+        Width = 67
         Height = 13
         Caption = 'Update every:'
       end
       object sePerImage: TSpinEdit
-        Left = 9
+        Left = 7
         Top = 58
         Width = 97
         Height = 22
@@ -112,11 +112,20 @@ object fmTurmites: TfmTurmites
         TabOrder = 0
         Value = 50000
       end
+      object cbPause: TCheckBox
+        Left = 7
+        Top = 85
+        Width = 97
+        Height = 17
+        Caption = 'Pause'
+        TabOrder = 1
+        OnClick = cbPauseClick
+      end
     end
     object btnSaveCurr: TButton
-      Left = 6
+      Left = 5
       Top = 260
-      Width = 113
+      Width = 115
       Height = 25
       Caption = 'save [F2]'
       TabOrder = 3
@@ -125,12 +134,12 @@ object fmTurmites: TfmTurmites
     object GroupBox3: TGroupBox
       Left = 5
       Top = 288
-      Width = 114
+      Width = 115
       Height = 91
       Caption = 'Style'
       TabOrder = 4
       object cbUnscaled: TCheckBox
-        Left = 5
+        Left = 7
         Top = 15
         Width = 97
         Height = 17
@@ -141,7 +150,7 @@ object fmTurmites: TfmTurmites
         OnClick = cbUnscaledClick
       end
       object cbMonochrome: TCheckBox
-        Left = 5
+        Left = 7
         Top = 35
         Width = 97
         Height = 17
@@ -154,7 +163,7 @@ object fmTurmites: TfmTurmites
     object lbLastRules: TListBox
       Left = 5
       Top = 380
-      Width = 114
+      Width = 115
       Height = 126
       ItemHeight = 13
       TabOrder = 5
