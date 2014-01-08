@@ -146,8 +146,14 @@ begin
 end;
 
 procedure TfmTurmites.btnEnterClick(Sender: TObject);
+var
+  def: string;
 begin
-  BeginComp(StrToInt(InputBox('Load HHP', 'Enter HHP', IntToStr(fAnt.GetHHP))));
+  if Assigned(fAnt) then
+    def:= IntToStr(fAnt.GetHHP)
+  else
+    def:= '5';
+  BeginComp(StrToInt(InputBox('Load HHP', 'Enter HHP', def)));
 end;
 
 procedure TfmTurmites.btnSaveCurrClick(Sender: TObject);
