@@ -107,11 +107,18 @@ var
 begin
   FreeAndNil(fWorld);
   FreeAndNil(fAnt);
+  tmrSim.Enabled:= false;
+  try
+    fAnt:= TAnt.Create(hhp);
+  except
+    fAnt:= nil;
+    raise;
+  end;
+
   fWorld:= TAntWorld.Create(513, 513);
   fWorld.Wrap:= false;
-  fAnt:= TAnt.Create(hhp);
   fAnt.CenterIn(fWorld);
-  colors:= length(fant.GetRule);
+  colors:= length(fAnt.GetRule);
   if cbMonochrome.Checked then
     fWorld.SetAntPalette(plMonochrome, colors)
   else

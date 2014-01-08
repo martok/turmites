@@ -3,15 +3,18 @@ unit uAnt;
 interface
 
 uses
-  uAntWorld;
+  SysUtils, uAntWorld;
 
 type
+  EAntException = class(Exception);
+
   TAnt = class
     X, Y: integer;
     Face: byte;
     Rule: array of boolean;
     constructor Create(const aHHP: Cardinal);
 
+    procedure SetHHP(const aHHP: Cardinal);
     function GetHHP: Cardinal;
     function GetRule: String;
 
@@ -30,14 +33,21 @@ implementation
 { TAnt }
 
 constructor TAnt.Create(const aHHP: Cardinal);
+begin
+  inherited Create;
+  Face:= FACE_DOWN;
+
+  SetHHP(aHHP);
+end;
+
+procedure TAnt.SetHHP(const aHHP: Cardinal);
 var
   h: Cardinal;
   i: integer;
   rtmp: array of boolean;
 begin
-  inherited Create;
-  Face:= FACE_DOWN;
-
+  if (aHHP < 4) then
+    raise EAntException.CreateFmt('%u is not a valid HHP number (>4)', [aHHP]);
   h:= aHHP;
   SetLength(rtmp, 0);
   i:= 0;
