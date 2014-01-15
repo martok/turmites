@@ -27,6 +27,7 @@ type
     cbMonochrome: TCheckBox;
     lbLastRules: TListBox;
     cbPause: TCheckBox;
+    lbGenPerS: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormPaint(Sender: TObject);
     procedure tmrSimTimer(Sender: TObject);
@@ -45,6 +46,8 @@ type
     { Private-Deklarationen }
     fWorld: TAntWorld;
     fAnt: TAnt;
+    genpers: double;
+    lastgentime: Cardinal;
     procedure BeginComp(hhp: Cardinal);
   public
     { Public-Deklarationen }
@@ -65,6 +68,7 @@ begin
   DoubleBuffered:= true;
   Randomize;
   btnRandom.Click;
+  genpers:= 0.0;
 end;
 
 procedure TfmTurmites.FormDestroy(Sender: TObject);
@@ -85,8 +89,11 @@ end;
 procedure TfmTurmites.tmrSimTimer(Sender: TObject);
 var
   i, m: integer;
+  t: Cardinal;
+  pg: Int64;
 begin
   m:= StrToIntDef(sePerImage.Text, 1);
+  pg:= fWorld.Generation;
   for i:= 1 to m do begin
     if not fAnt.Run(fWorld) then begin
       tmrSim.Enabled:= false;
@@ -100,6 +107,10 @@ begin
   else
   if m < 10000 then
     Sleep(0);
+  t:= GetTickCount;
+  genpers:= 0.5 * (genpers + (fWorld.Generation-pg)/((t-lastgentime+1)/1000));
+  lastgentime:= t;
+  lbGenPerS.Caption:= Format('%8.2f M/s', [genpers/1E6]);
 end;
 
 procedure TfmTurmites.BeginComp(hhp: Cardinal);
@@ -131,6 +142,8 @@ begin
   if lbLastRules.Items.IndexOf(s) >= 0 then
     lbLastRules.Items.Delete(lbLastRules.Items.IndexOf(s));
   lbLastRules.Items.Insert(0, s);
+
+  lastgentime:= GetTickCount;
 
   cbPause.Checked:= False;
   cbPause.Enabled:= True;

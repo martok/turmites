@@ -83,7 +83,7 @@ object fmTurmites: TfmTurmites
       Left = 5
       Top = 143
       Width = 115
-      Height = 113
+      Height = 133
       Caption = 'Generations'
       TabOrder = 2
       object Label1: TLabel
@@ -101,6 +101,15 @@ object fmTurmites: TfmTurmites
         Width = 67
         Height = 13
         Caption = 'Update every:'
+      end
+      object lbGenPerS: TLabel
+        Left = 7
+        Top = 107
+        Width = 97
+        Height = 13
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = '10000000000'
       end
       object sePerImage: TSpinEdit
         Left = 7
@@ -124,7 +133,7 @@ object fmTurmites: TfmTurmites
     end
     object btnSaveCurr: TButton
       Left = 5
-      Top = 260
+      Top = 280
       Width = 115
       Height = 25
       Caption = 'save [F2]'
@@ -133,7 +142,7 @@ object fmTurmites: TfmTurmites
     end
     object GroupBox3: TGroupBox
       Left = 5
-      Top = 288
+      Top = 308
       Width = 115
       Height = 91
       Caption = 'Style'
@@ -162,7 +171,7 @@ object fmTurmites: TfmTurmites
     end
     object lbLastRules: TListBox
       Left = 5
-      Top = 380
+      Top = 400
       Width = 115
       Height = 126
       ItemHeight = 13
