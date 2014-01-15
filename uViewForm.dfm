@@ -119,7 +119,7 @@ object fmTurmites: TfmTurmites
         MaxValue = 100000000
         MinValue = 100
         TabOrder = 0
-        Value = 50000
+        Value = 500000
       end
       object cbPause: TCheckBox
         Left = 7

@@ -100,6 +100,10 @@ begin
       break;
     end;
   end;
+  t:= GetTickCount;
+  genpers:= 0.5 * (genpers + (fWorld.Generation-pg)/((t-lastgentime+1)/1000));
+  lastgentime:= t;
+  lbGenPerS.Caption:= Format('%8.3f M/s', [genpers/1E6]);
   Label1.Caption:= IntToStr(fWorld.Generation);
   Refresh;
   if m < 100 then
@@ -107,10 +111,6 @@ begin
   else
   if m < 10000 then
     Sleep(0);
-  t:= GetTickCount;
-  genpers:= 0.5 * (genpers + (fWorld.Generation-pg)/((t-lastgentime+1)/1000));
-  lastgentime:= t;
-  lbGenPerS.Caption:= Format('%8.2f M/s', [genpers/1E6]);
 end;
 
 procedure TfmTurmites.BeginComp(hhp: Cardinal);

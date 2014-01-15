@@ -2,6 +2,8 @@ unit uAnt;
 
 interface
 
+{$OPTIMIZATION ON}
+
 uses
   SysUtils, uAntWorld;
 
@@ -10,8 +12,9 @@ type
 
   TAnt = class
     X, Y: integer;
-    Face: byte;
+    Face: Integer;
     Rule: array of boolean;
+    RuleLength: integer;
     constructor Create(const aHHP: Cardinal);
 
     procedure SetHHP(const aHHP: Cardinal);
@@ -60,6 +63,7 @@ begin
   SetLength(Rule, Length(rtmp));
   for i:= 0 to high(Rule) do
     Rule[i]:= rtmp[high(Rule) - i];
+  RuleLength:= Length(Rule);
 end;
 
 function TAnt.GetHHP: Cardinal;
@@ -98,20 +102,28 @@ const
     (3,0,1,2)
   );
 var
-  curr: byte;
+  curr, next, f: Integer;
 begin
   inc(aWorld.Generation);
 
   curr:= aWorld.Field[X,Y];
-  aWorld.Field[X,Y]:= (curr + 1) mod length(Rule);
 
-  Face:= newFace[Rule[curr], Face];
-  case Face of
+  // next:= (curr+1) mod RuleLength, but faster
+  next:= curr+1;
+  if next >= RuleLength then
+    dec(next, RuleLength);
+
+  aWorld.Field[X,Y]:= next;
+
+  f:= newFace[Rule[curr], Face];
+  case f of
     FACE_RIGHT: inc(X);
     FACE_UP: inc(Y);
     FACE_LEFT: dec(X);
     FACE_DOWN: dec(Y);
   end;
+  Face:= f;
+
   Result:= aWorld.WrapCoords(X,Y);
 end;
 

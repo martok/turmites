@@ -2,6 +2,8 @@ unit uAntWorld;
 
 interface
 
+{$OPTIMIZATION ON}
+
 uses
   Windows, SysUtils, Graphics;
 
@@ -123,16 +125,12 @@ end;
 
 function TAntWorld.GetField(X, Y: integer): byte;
 begin
-  if WrapCoords(X, Y) then
-    Result:= fpixels[Y]^[X]
-  else
-    Result:= 0;
+  Result:= fpixels[Y]^[X]
 end;
 
 procedure TAntWorld.SetField(X, Y: integer; const Value: byte);
 begin
-  if WrapCoords(X, Y) then
-    fpixels[Y]^[X]:= Value;
+  fpixels[Y]^[X]:= Value;
 end;
 
 function TAntWorld.WrapCoords(var X, Y: integer): boolean;
