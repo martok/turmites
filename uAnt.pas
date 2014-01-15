@@ -110,8 +110,8 @@ begin
 
   // next:= (curr+1) mod RuleLength, but faster
   next:= curr+1;
-  if next >= RuleLength then
-    dec(next, RuleLength);
+  if next = RuleLength then
+    next:= 0;
 
   aWorld.Field[X,Y]:= next;
 

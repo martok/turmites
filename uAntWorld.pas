@@ -15,8 +15,11 @@ type
     fPixels: array of PByteArray;
     function GetField(X, Y: integer): byte;
     procedure SetField(X, Y: integer; const Value: byte);
-  public      
+  protected
+    procedure UpdatePixelArray;
+  public
     Generation: int64;
+    RawField: array of PByte;
     constructor Create(const aWidth, aHeight: integer); reintroduce;
     property Wrap: boolean read fWrap write fWrap;
     property Field[X, Y: integer]: byte read GetField write SetField;
@@ -41,12 +44,10 @@ procedure TAntWorld.Clear;
 var
   x,y: integer;
 begin
-  SetLength(fPixels, Height);
-  for y:= 0 to Height-1 do begin
-    fPixels[y]:= ScanLine[y];
+  UpdatePixelArray;
+  for y:= 0 to Height-1 do
     for x:= 0 to Width-1 do
       Field[x,y]:= 0;
-  end;
   Generation:= 0;
 end;
 
@@ -63,10 +64,22 @@ begin
   Clear;
 end;
 
+procedure TAntWorld.UpdatePixelArray;
+var
+  y,x: integer;
+begin
+  SetLength(fPixels, Height);
+  SetLength(RawField, Height * Width);
+  for y:= 0 to Height-1 do begin
+    fPixels[y]:= ScanLine[y];
+    for x:= 0 to Width-1 do
+      RawField[y*Width+x]:= @(fPixels[y][x]);
+  end;
+end;
+
 procedure TAntWorld.SetAntPalette(const aPalette: TAntPalette; const aCount: integer);
 var
   pal: TMaxLogPalette;
-  y: integer;
 
   procedure PushColor(C: TColor);
   begin
@@ -118,9 +131,7 @@ begin
 
   Palette:= CreatePalette(PLOGPALETTE(@pal)^);
 
-  SetLength(fPixels, Height);
-  for y:= 0 to Height-1 do
-    fPixels[y]:= ScanLine[y];
+  UpdatePixelArray;
 end;
 
 function TAntWorld.GetField(X, Y: integer): byte;
@@ -143,7 +154,5 @@ begin
     Result:= (X>=0) and (Y>=0) and (X<Width) and (Y<Height);
   end;
 end;     
-
-
 
 end.
